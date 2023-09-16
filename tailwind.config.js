@@ -9,11 +9,19 @@ export default {
       'green': '#339933',
       'gray': '#222222',
       'light-gray': '#333333',
-      'white': '#ffffff'
+      'lighter-gray': '#444444',
+      'lightest-gray': '#555555',
+      'white': '#ffffff',
+      'black': '#000000'
     }, fontFamily: {
       sans: ['Ubuntu', 'sans-serif'],
     },
-    extend: {},
+    extend: {
+      spacing: {
+        '112': '28rem',
+        '128': '32rem',
+      }
+    }
   },
   plugins: [],
 }
