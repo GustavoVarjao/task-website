@@ -6,8 +6,6 @@ let data = ref();
 
 onMounted(async () => {
   data.value = await ofetch('http://localhost:3333/tasks')
-
-  console.log(data.value)
 })
 
 </script>
@@ -16,10 +14,18 @@ onMounted(async () => {
   <ul class="grid place-content-center w-screen h-auto py-5">
     <li v-for="{ title, description, createdAt, updatedAt, completedAt } in data"
       class="bg-light-gray w-160 h-auto rounded my-5">
-      <div class="flex place-content-between w-160 px-4 py-2.5">
-        <h2 class="text-white font-bold text-2xl ">{{ title }}</h2>
-        <div>
-          <img src="../assets/img/edit.png" class="w-5 h-5 rounded mt-1.5" />
+      <div class="flex place-content-between w-160 p-4">
+        <h2 class="text-white font-bold text-2xl h-7 ">{{ title }}</h2>
+        <div class="flex space-x-1">
+          <button>
+            <img src="../assets/img/edit.png" class="w-7 h-7 rounded" />
+          </button>
+          <button>
+            <img src="../assets/img/complete.png" class="w-7 h-7 rounded" />
+          </button>
+          <button>
+            <img src="../assets/img/delete.png" class="w-7 h-7 rounded" />
+          </button>
         </div>
       </div>
 
