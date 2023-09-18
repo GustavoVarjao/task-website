@@ -19,7 +19,7 @@ const modalSwitch = () => {
       <SearchBox />
     </div>
     <Tasks />
-    <Modal v-show="bool" @switch="modalSwitch" />
+    <Modal v-show="bool" @closeModal="modalSwitch" />
     <button class="fixed bottom-5 right-5 bg-green w-20 h-20 rounded-full grid place-content-center text-8xl text-white"
       @click="modalSwitch()">+</button>
   </div>

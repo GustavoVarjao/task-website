@@ -1,11 +1,16 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
-import { ofetch } from 'ofetch'
+import { onMounted, onUpdated, ref } from 'vue'
+import { taskRequest } from '../services/taskRequest'
+import type { GetTaskObject } from '../models/TaskObject'
 
-let data = ref();
+const data = ref<GetTaskObject[]>([])
 
 onMounted(async () => {
-  data.value = await ofetch('http://localhost:3333/tasks')
+  data.value = await taskRequest('GET')
+})
+
+onUpdated(async () => {
+  data.value = await taskRequest('GET')
 })
 
 </script>

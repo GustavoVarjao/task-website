@@ -18,8 +18,6 @@ export default {
     },
     extend: {
       spacing: {
-        '1.5': '6px',
-        '2.5': '10px',
         '112': '28rem',
         '128': '32rem',
         '160': '40rem'
