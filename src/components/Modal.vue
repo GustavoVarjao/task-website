@@ -22,6 +22,9 @@ const sendTask = async () => {
 
   emit('reloadTask')
 
+  postBody.title = ''
+  postBody.description = ''
+
   closeModal()
 }
 
