@@ -1,23 +1,15 @@
 <script setup lang="ts">
-import { onMounted, onUpdated, ref } from 'vue'
-import { taskRequest } from '../services/taskRequest'
-import type { GetTaskObject } from '../models/TaskObject'
+import type { GetTaskObject } from '../models/TaskObject';
 
-const data = ref<GetTaskObject[]>([])
-
-onMounted(async () => {
-  data.value = await taskRequest('GET')
-})
-
-onUpdated(async () => {
-  data.value = await taskRequest('GET')
-})
+defineProps<{
+  taskData: GetTaskObject[]
+}>()
 
 </script>
 
 <template>
   <ul class="grid place-content-center w-screen h-auto py-5">
-    <li v-for="{ title, description, createdAt, updatedAt, completedAt } in data"
+    <li v-for="{ title, description, createdAt, updatedAt, completedAt } in taskData"
       class="bg-light-gray w-160 h-auto rounded my-5">
       <div class="flex place-content-between w-160 p-4">
         <h2 class="text-white font-bold text-2xl h-7 ">{{ title }}</h2>

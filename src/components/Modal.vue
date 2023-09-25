@@ -3,7 +3,7 @@ import { reactive } from 'vue'
 import { taskRequest } from '../services/taskRequest'
 
 
-const emit = defineEmits(['closeModal']);
+const emit = defineEmits(['closeModal', 'reloadTask']);
 
 const closeModal = () => {
   emit('closeModal')
@@ -17,8 +17,10 @@ const postBody = reactive(
   }
 )
 
-const sendTask = () => {
-  taskRequest('POST', postBody)
+const sendTask = async () => {
+  await taskRequest('POST', postBody)
+
+  emit('reloadTask')
 
   closeModal()
 }
