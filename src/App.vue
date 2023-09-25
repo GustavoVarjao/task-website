@@ -29,7 +29,7 @@ const modalSwitch = () => {
     <div class="border-b border-green p-4 text-center">
       <SearchBox />
     </div>
-    <Tasks :taskData="taskData" />
+    <Tasks :taskData="taskData" @reloadTask="loadTaskData" />
     <Modal v-show="bool" @closeModal="modalSwitch" @reloadTask="loadTaskData" />
     <button class="fixed bottom-5 right-5 bg-green w-20 h-20 rounded-full grid place-content-center text-8xl text-white"
       @click="modalSwitch()">+</button>
