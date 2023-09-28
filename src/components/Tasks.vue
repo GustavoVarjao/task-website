@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import type { GetTaskObject } from '../models/TaskObject';
+import { format } from 'date-fns';
 import { taskRequest } from '../services/taskRequest';
+import type { GetTaskObject } from '../models/TaskObject';
 
 defineProps<{
   taskData: GetTaskObject[]
@@ -8,17 +9,24 @@ defineProps<{
 
 const emit = defineEmits(['reloadTask'])
 
-const deleteTask = async (id: string) => {
-  await taskRequest('DELETE', undefined, id)
+const taskRequestHandler = async (method: string, id: string) => {
+  let body
+
+  if (method === 'PATCH') {
+    body = {
+      completedAt: format(new Date(), 'dd/MM/yyyy')
+    }
+  }
+
+  await taskRequest(method, body, id)
 
   emit('reloadTask')
 }
-
 </script>
 
 <template>
   <ul class="grid place-content-center w-screen h-auto py-5">
-    <li v-for="{ title, description, createdAt, updatedAt, completedAt, id } in taskData"
+    <li v-for="{ title, description, createdAt, updatedAt, completedAt, id } in  taskData "
       class="bg-light-gray w-160 h-auto rounded my-5">
       <div class="flex place-content-between w-160 p-4">
         <h2 class="text-white font-bold text-2xl h-7 ">{{ title }}</h2>
@@ -26,10 +34,11 @@ const deleteTask = async (id: string) => {
           <button>
             <img src="../assets/img/edit.png" class="w-7 h-7 rounded" />
           </button>
-          <button>
-            <img src="../assets/img/complete.png" class="w-7 h-7 rounded" />
+          <button @click="taskRequestHandler('PATCH', id)">
+            <img :src="`/src/assets/img/${completedAt ? 'uncomplete' : 'complete'}.png`" class="w-7 h-7 rounded" />
+
           </button>
-          <button @click="deleteTask(id)">
+          <button @click="taskRequestHandler('DELETE', id)">
             <img src="../assets/img/delete.png" class="w-7 h-7 rounded" />
           </button>
         </div>

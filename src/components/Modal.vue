@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { reactive } from 'vue'
 import { taskRequest } from '../services/taskRequest'
+import { format } from 'date-fns';
+import { PostTaskObject } from '../models/TaskObject';
 
 
 const emit = defineEmits(['closeModal', 'reloadTask']);
@@ -9,15 +11,15 @@ const closeModal = () => {
   emit('closeModal')
 }
 
-const postBody = reactive(
+const postBody = reactive<PostTaskObject>(
   {
     title: '',
     description: '',
-    createdAt: '24/04/2012'
+    createdAt: format(new Date(), 'dd/MM/yyyy')
   }
 )
 
-const sendTask = async () => {
+const postTask = async () => {
   await taskRequest('POST', postBody)
 
   emit('reloadTask')
@@ -36,7 +38,7 @@ const sendTask = async () => {
       <h1 class=" font-bold text-white text-3xl m-5">
         CRIAR TAREFA
       </h1>
-      <form method="post" @submit.prevent="sendTask" @keydown.enter.prevent>
+      <form method="post" @submit.prevent="postTask" @keydown.enter.prevent>
         <input v-model="postBody.title" type="text" placeholder="nome"
           class="bg-lighter-gray rounded-full w-3/4 h-10 p-1 pl-4 focus:outline-none text-white mt-5">
         <textarea v-model="postBody.description" rows="6" cols="50" placeholder="descrição"

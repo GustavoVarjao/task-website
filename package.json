@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "date-fns": "^2.30.0",
     "ofetch": "^1.3.3",
     "vue": "^3.3.4"
   },

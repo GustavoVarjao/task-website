@@ -7,5 +7,8 @@ export const urlBuilder = (method: string, id?: string): string => {
   if (method === 'DELETE') {
     return URL + `/${id}`
   }
+  if (method === 'PATCH') {
+    return URL + `/${id}/complete`
+  }
   return URL
 }
