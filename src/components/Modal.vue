@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { reactive } from 'vue'
+import { reactive, ref } from 'vue'
 import { taskRequest } from '../services/taskRequest'
 import { format } from 'date-fns';
 import { PostTaskObject } from '../models/TaskObject';
@@ -9,6 +9,7 @@ const emit = defineEmits(['closeModal', 'reloadTask']);
 
 const closeModal = () => {
   emit('closeModal')
+  alertBoolean.value = false
 }
 
 const postBody = reactive<PostTaskObject>(
@@ -19,7 +20,14 @@ const postBody = reactive<PostTaskObject>(
   }
 )
 
+const alertBoolean = ref(false)
+
 const postTask = async () => {
+  if (postBody.title === '' && postBody.description === '') {
+    alertBoolean.value = true
+    return
+  }
+
   await taskRequest('POST', postBody)
 
   emit('reloadTask')
@@ -43,6 +51,7 @@ const postTask = async () => {
           class="bg-lighter-gray rounded-full w-3/4 h-10 p-1 pl-4 focus:outline-none text-white mt-5">
         <textarea v-model="postBody.description" rows="6" cols="50" placeholder="descrição"
           class="bg-lighter-gray rounded-3xl w-3/4 p-1 pl-4 focus:outline-none text-white mt-5 resize-none pt-3"></textarea>
+        <p v-show="alertBoolean" class="text-red text-lg">OS DOIS CAMPOS SÃO OBRIGATÓRIOS</p>
         <div class="flex justify-between w-3/4 h-10 mx-auto my-10">
           <button type="button" @click="closeModal()"
             class="bg-lightest-gray rounded-lg text-white w-40 text-2xl">CANCELAR</button>

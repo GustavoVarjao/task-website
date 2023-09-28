@@ -12,7 +12,8 @@ export default {
       'lighter-gray': '#444444',
       'lightest-gray': '#555555',
       'white': '#ffffff',
-      'black': '#000000'
+      'black': '#000000',
+      'red': '#ff0000'
     }, fontFamily: {
       sans: ['Ubuntu', 'sans-serif'],
     },
