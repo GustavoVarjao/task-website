@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { format } from 'date-fns';
 import { taskRequest } from '../services/taskRequest';
 import type { GetTaskObject } from '../models/TaskObject';
 
@@ -7,21 +6,6 @@ defineProps<{
   taskData: GetTaskObject[]
 }>()
 
-const emit = defineEmits(['reloadTask'])
-
-const taskRequestHandler = async (method: string, id: string) => {
-  let body
-
-  if (method === 'PATCH') {
-    body = {
-      completedAt: format(new Date(), 'dd/MM/yyyy')
-    }
-  }
-
-  await taskRequest(method, body, id)
-
-  emit('reloadTask')
-}
 </script>
 
 <template>
@@ -34,11 +18,11 @@ const taskRequestHandler = async (method: string, id: string) => {
           <button>
             <img src="../assets/img/edit.png" class="w-7 h-7 rounded" />
           </button>
-          <button @click="taskRequestHandler('PATCH', id)">
+          <button @click="taskRequest({ method: 'PATCH', id })">
             <img :src="`/src/assets/img/${completedAt ? 'uncomplete' : 'complete'}.png`" class="w-7 h-7 rounded" />
 
           </button>
-          <button @click="taskRequestHandler('DELETE', id)">
+          <button @click="taskRequest({ method: 'DELETE', id })">
             <img src="../assets/img/delete.png" class="w-7 h-7 rounded" />
           </button>
         </div>

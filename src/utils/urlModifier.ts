@@ -1,15 +1,12 @@
-const URL = "http://localhost:3333/tasks";
+export const TASK_API_BASE_URL = 'http://localhost:3333/tasks';
 
-export const urlModifier = (method: string, id?: string): string => {
-  if (method === "GET") {
-    return URL;
-  }
-  if (method === "DELETE" || method === "PUT") {
-    return URL + `/${id}`;
-  }
-  if (method === "PATCH") {
-    return URL + `/${id}/complete`;
+export const urlModifier = (id?: string, patch?: boolean): string => {
+  let modfiedUrl = TASK_API_BASE_URL + `/${id}`;
+
+  if (patch) {
+    return modfiedUrl + '/complete';
   }
 
-  return URL;
+  return modfiedUrl
+
 };

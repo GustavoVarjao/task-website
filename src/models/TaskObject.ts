@@ -1,15 +1,12 @@
-export interface PostTaskObject {
+export interface PostFormObject {
   title: string;
   description: string;
+}
+
+export interface GetTaskObject extends PostFormObject {
   createdAt: string;
-}
-
-export interface PatchTaskObject {
-  completedAt: string;
-}
-
-export interface GetTaskObject extends PostTaskObject, PatchTaskObject {
   updatedAt: string;
+  completedAt: string;
   id: string;
 }
 
