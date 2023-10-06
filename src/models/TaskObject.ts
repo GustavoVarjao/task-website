@@ -8,5 +8,6 @@ export interface GetTaskObject extends PostFormObject {
   updatedAt: string;
   completedAt: string;
   id: string;
+  isEditing: boolean;
 }
 

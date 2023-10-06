@@ -5,11 +5,11 @@ import { taskRequest } from '../services/taskRequest'
 
 const emit = defineEmits(['closeModal']);
 
-const isInputsEmpty = ref(false)
+const isInputEmpty = ref(false)
 
 const closeModal = () => {
   emit('closeModal')
-  isInputsEmpty.value = false
+  isInputEmpty.value = false
 }
 
 const postFormInitialState = {
@@ -21,8 +21,8 @@ const postForm = reactive({ ...postFormInitialState })
 
 const sendPostForm = () => {
   const { title, description } = postForm
-  if (title === '' && description === '') {
-    isInputsEmpty.value = true
+  if (title === '' || description === '') {
+    isInputEmpty.value = true
     return
   }
 
@@ -51,7 +51,7 @@ const sendPostForm = () => {
           class="bg-gray rounded-full w-3/4 h-10 p-1 pl-4 focus:outline-none text-white mt-5">
         <textarea v-model="postForm.description" rows="6" cols="50" placeholder="descrição"
           class="bg-gray rounded-3xl w-3/4 p-1 pl-4 focus:outline-none text-white mt-5 resize-none pt-3"></textarea>
-        <p v-show="isInputsEmpty" class="text-red text-lg">OS DOIS CAMPOS SÃO OBRIGATÓRIOS</p>
+        <p v-show="isInputEmpty" class="text-red text-lg">OS DOIS CAMPOS SÃO OBRIGATÓRIOS</p>
         <div class="flex justify-between w-3/4 h-10 mx-auto my-10">
           <button type="button" @click="closeModal()"
             class="bg-light-gray rounded-lg text-white w-40 text-2xl">CANCELAR</button>

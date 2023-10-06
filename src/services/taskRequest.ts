@@ -1,5 +1,6 @@
 import { ofetch } from 'ofetch'
 import type { RequestData } from '../models/RequestData'
+import type { GetTaskObject } from '../models/TaskObject'
 import { TASK_API_BASE_URL, urlModifier } from '../utils/urlModifier'
 import { taskData } from '../App.vue'
 import { format } from 'date-fns';
@@ -16,7 +17,7 @@ export const taskRequest = async ({
       method,
       body: {
         ...taskBody,
-        completedAt: format(new Date(), 'dd/MM/yyyy')
+        createdAt: format(new Date(), 'dd/MM/yyyy')
       }
     })
   }
@@ -36,7 +37,20 @@ export const taskRequest = async ({
     })
   }
 
+  if (method === 'PUT') {
+    await ofetch(urlModifier(id), {
+      method,
+      body: {
+        ...taskBody,
+        updatedAt: format(new Date(), 'dd/MM/yyyy')
+      }
+    })
+  }
 
-
-  taskData.value = await ofetch(TASK_API_BASE_URL)
+  taskData.value = (await ofetch(TASK_API_BASE_URL)).map((task: GetTaskObject) => {
+    return {
+      ...task,
+      isEditing: false,
+    }
+  })
 }

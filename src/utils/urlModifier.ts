@@ -8,5 +8,4 @@ export const urlModifier = (id?: string, patch?: boolean): string => {
   }
 
   return modfiedUrl
-
 };
