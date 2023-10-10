@@ -1,11 +1,20 @@
-export const TASK_API_BASE_URL = 'http://localhost:3333/tasks';
+import { UrlData } from "../models/RequestData";
 
-export const urlModifier = (id?: string, patch?: boolean): string => {
-  let modfiedUrl = TASK_API_BASE_URL + `/${id}`;
+export const urlModifier = ({ id, searchTerm }: UrlData, isPatch?: boolean): string => {
+  let url = 'http://localhost:3333/tasks';
 
-  if (patch) {
-    return modfiedUrl + '/complete';
+  if (id) {
+    url = url + `/${id}`;
+
+    if (isPatch) {
+      return url + '/complete';
+    }
   }
 
-  return modfiedUrl
+  if (searchTerm) {
+    url = url + `?search=${searchTerm}`
+  }
+
+
+  return url
 };
