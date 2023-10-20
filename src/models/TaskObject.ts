@@ -1,13 +1,12 @@
-export interface PostFormObject {
+export type PostFormObject = {
   title: string;
   description: string;
-}
+};
 
-export interface GetTaskObject extends PostFormObject {
+export type GetTaskObject = {
   createdAt: string;
   updatedAt: string;
   completedAt: string;
   id: string;
   isEditing: boolean;
-}
-
+} & PostFormObject;

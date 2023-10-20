@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref } from 'vue';
 import { taskRequest } from '../services/taskRequest';
 
 const searchTerm = ref('');
@@ -8,12 +8,14 @@ const searchTerm = ref('');
 <template>
   <div class="flex justify-center">
     <input v-model="searchTerm" type="text" placeholder="procurar tarefas"
-      class="bg-dark-gray rounded-l-full w-1/3 h-10 p-1 pl-4 focus:outline-none text-white" />
-    <button @click="taskRequest({
-      method: 'GET',
-      searchTerm,
-    })" class="text-center bg-dark-gray w-10 h-10 rounded-r-full">
-      <img src="../assets/img/search.png" class="w-6 h-6" />
+      class="h-10 w-1/3 rounded-l-full bg-dark-gray p-1 pl-4 text-white focus:outline-none">
+    <button class="h-10 w-10 rounded-r-full bg-dark-gray text-center" @click="
+      taskRequest({
+        method: 'GET',
+        searchTerm,
+      })
+      ">
+      <img src="../assets/img/search.png" class="h-6 w-6">
     </button>
   </div>
 </template>

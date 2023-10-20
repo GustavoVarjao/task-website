@@ -1,11 +1,11 @@
-import { PostFormObject } from "./TaskObject";
+import type { PostFormObject } from './TaskObject';
 
-export interface UrlData {
+export type UrlData = {
   id?: string;
   searchTerm?: string;
-}
+};
 
-export interface RequestData extends UrlData {
+export type RequestData = {
   method: string;
   taskBody?: PostFormObject;
-}
+} & UrlData;

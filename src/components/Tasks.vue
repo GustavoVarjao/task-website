@@ -1,111 +1,109 @@
 <script setup lang="ts">
-import { taskRequest } from '../services/taskRequest';
-import { reactive } from 'vue'
-import type { GetTaskObject } from '../models/TaskObject';
-import { taskData } from '../App.vue';
-
-const props = defineProps<{
-  taskData: GetTaskObject[]
-}>()
+import { reactive } from 'vue';
+import { taskData, taskRequest } from '../services/taskRequest';
 
 const taskEditedData = reactive({
   title: '',
   description: '',
-  isEditModeOn: false
-})
+  isEditModeOn: false,
+});
 
-const openEditMode = (index: number) => {
-  if (taskEditedData.isEditModeOn) {
-    return
-  }
+function openEditMode(index: number) {
+  if (taskEditedData.isEditModeOn) return;
 
-  const { title, description } = props.taskData[index];
+  const { title, description } = taskData.value[index];
 
   Object.assign(taskEditedData, {
     title,
     description,
     isEditModeOn: true,
-  })
+  });
 
-  props.taskData[index].isEditing = true;
+  taskData.value[index].isEditing = true;
 }
 
-const closeEditMode = (index: number) => {
+function closeEditMode(index: number) {
   taskEditedData.isEditModeOn = false;
 
-  props.taskData[index].isEditing = false;
+  taskData.value[index].isEditing = false;
 }
 
-const sendEditedTask = async (index: number, id: string) => {
-  const { title, description } = taskEditedData
-  if (title === '' && description === '') {
-    return
-  }
+async function sendEditedTask(index: number, id: string) {
+  const { title, description } = taskEditedData;
+  if (title === '' && description === '') return;
 
   await taskRequest({
-    method: 'PUT', taskBody: {
+    method: 'PUT',
+    taskBody: {
       title,
-      description
+      description,
     },
-    id
-  })
+    id,
+  });
 
-  closeEditMode(index)
+  closeEditMode(index);
 }
-
 </script>
 
 <template>
-  <ul class="grid place-content-center w-screen h-auto py-5">
+  <ul class="grid h-auto w-screen place-content-center py-5">
     <li v-for="(
-      {
-        title,
-        description,
-        createdAt,
-        updatedAt,
-        completedAt,
-        id,
-        isEditing,
-      },
-        index
-    ) in  taskData " :key="index" class="bg-dark-gray w-160 h-auto rounded my-5">
-      <div class="flex place-content-between w-160 p-4">
-        <h2 v-if="!isEditing" class="text-white font-bold text-2xl h-7">
+        {
+          title,
+          description,
+          createdAt,
+          updatedAt,
+          completedAt,
+          id,
+          isEditing,
+        },
+          index
+      ) in taskData" :key="index" class="my-5 h-auto w-160 rounded bg-dark-gray">
+      <div class="flex w-160 place-content-between p-4">
+        <h2 v-if="!isEditing" class="h-7 text-2xl font-bold text-white">
           {{ title }}
         </h2>
-        <input v-else type="text" v-model="taskEditedData.title"
-          class="text-lighter-gray font-bold text-2xl h-7 bg-dark-gray focus:outline-none pt-1" />
+        <input v-else v-model="taskEditedData.title" type="text"
+          class="h-7 bg-dark-gray pt-1 text-2xl font-bold text-lighter-gray focus:outline-none">
         <div class="flex space-x-1">
           <button>
-            <img @click="openEditMode(index)" :src="`/src/assets/img/${isEditing ? 'editing' : 'edit'
-              }.png`" class="w-7 h-7 rounded" />
+            <img :src="`/src/assets/img/${isEditing ? 'editing' : 'edit'}.png`" class="h-7 w-7 rounded"
+              @click="openEditMode(index)">
           </button>
           <button @click="taskRequest({ method: 'PATCH', id })">
-            <img :src="`/src/assets/img/${completedAt ? 'uncomplete' : 'complete'}.png`" class="w-7 h-7 rounded" />
-
+            <img :src="`/src/assets/img/${completedAt ? 'uncomplete' : 'complete'
+              }.png`" class="h-7 w-7 rounded">
           </button>
           <button @click="taskRequest({ method: 'DELETE', id })">
-            <img src="../assets/img/delete.png" class="w-7 h-7 rounded" />
+            <img src="../assets/img/delete.png" class="h-7 w-7 rounded">
           </button>
         </div>
       </div>
-      <div class="bg-gray m-4 px-4 py-2 rounded">
+      <div class="m-4 rounded bg-gray px-4 py-2">
         <div v-if="!isEditing" class="text-white">
           {{ description }}
         </div>
         <textarea v-else v-model="taskEditedData.description" type="text"
-          class="w-full text-lighter-gray rounded resize-none focus:outline-none bg-gray" rows="4" cols="50"></textarea>
+          class="w-full resize-none rounded bg-gray text-lighter-gray focus:outline-none" rows="4" cols="50" />
       </div>
       <div v-if="!isEditing" class="flex place-content-between p-4">
-        <p class="text-green">criada dia: {{ createdAt }}</p>
-        <p v-if="updatedAt" class="text-green">editada dia: {{ updatedAt }}</p>
+        <p class="text-green">
+          criada dia: {{ createdAt }}
+        </p>
+        <p v-if="updatedAt" class="text-green">
+          editada dia: {{ updatedAt }}
+        </p>
         <p v-if="completedAt" class="text-green">
           completada dia: {{ completedAt }}
         </p>
       </div>
-      <div v-else class="flex justify-between mt-6 mb-4 mx-32">
-        <button @click="closeEditMode(index)" class="bg-light-gray rounded-lg text-white w-40 text-2xl">CANCELAR</button>
-        <button @click="sendEditedTask(index, id)" class="bg-green rounded-lg text-white w-40 text-2xl">ENVIAR</button>
+      <div v-else class="mx-32 mb-4 mt-6 flex justify-between">
+        <button class="w-40 rounded-lg bg-light-gray text-2xl text-white" @click="closeEditMode(index)">
+          CANCELAR
+        </button>
+        <button class="w-40 rounded-lg bg-green text-2xl text-white" @click="sendEditedTask(index, id)">
+          ENVIAR
+        </button>
       </div>
     </li>
   </ul>
